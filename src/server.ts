@@ -40,7 +40,7 @@ app.use("/organizations", organizationRouter);
 app.use("/jobs", jobsRouter);
 
 app.get("/", (req, res) => {
-  res.send("Server Is Healthy And Running");
+  res.status(2000).json("Server Is Healthy And Running");
 });
 
 export default app;
