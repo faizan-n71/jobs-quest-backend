@@ -1,0 +1,72 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id       String @id @default(auto()) @map("_id") @db.ObjectId
+  username String @unique
+  email    String @unique
+  password String
+
+  bio         String?
+  description String?
+
+  organizations Organization[] // A user can own multiple organizations
+  applicants    Applicant[] // A user can be associated with multiple applicant records
+}
+
+model Organization {
+  id      String @id @default(auto()) @map("_id") @db.ObjectId
+  ownerId String @db.ObjectId
+  owner   User   @relation(fields: [ownerId], references: [id], onDelete: Cascade)
+
+  name            String
+  averagePayRange Float[]
+  totalEmployees  Float
+
+  description String
+
+  jobs     Job[]
+  location String
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Applicant {
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+
+  applicantId String @db.ObjectId
+  applicant   User   @relation(fields: [applicantId], references: [id])
+
+  proposal String
+
+  jobsAppliedId String @db.ObjectId
+  jobApplied    Job    @relation(name: "JobApplicants", fields: [jobsAppliedId], references: [id])
+}
+
+model Job {
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+
+  title            String
+  smallDescription String
+
+  description String
+
+  organizationId String       @db.ObjectId
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+
+  averagePayRange Float[]
+  averageTime     DateTime[]
+  location        String
+
+  applicants Applicant[] @relation("JobApplicants")
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
