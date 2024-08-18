@@ -34,6 +34,7 @@
   },
   "scripts": {
     "dev": "nodemon src/server.ts",
-    "build": "tsc"
+    "build": "tsc",
+    "vercel-build": "echo Built"
   }
 }
