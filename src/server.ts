@@ -43,4 +43,6 @@ app.get("/", (req, res) => {
   res.status(2000).json("Server Is Healthy And Running");
 });
 
+app.listen(PORT, () => console.log("Server Ready"));
+
 export default app;
