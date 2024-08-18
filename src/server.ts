@@ -43,8 +43,4 @@ app.get("/", (req, res) => {
   res.send("Server Is Healthy And Running");
 });
 
-app.listen(PORT, () => {
-  console.log(`Server Running On http://localhost:${PORT}`);
-});
-
 export default app;
